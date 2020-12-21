@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .all {
+        width: 100%;
+        height: 100vh;
+    }
+
+    .banner {
+        width: 100%;
+        height: 100px;
+        background-color: cornflowerblue;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+    }
+
+    .box {
+        width: 100px;
+        height: 50px;
+        background-color: gainsboro;
+        text-align: center;
+        line-height: 50px;
+        font-size: 25px;
+        transition: 0.3s;
+
+    }
+
+    .box:hover {
+        background-color: darkgrey;
+    }
+
+    .box.active {
+        background-color: darkkhaki;
+    }
+
+    .body {
+        width: 100%;
+        height: 100%;
+        background-color: darkolivegreen;
+
+    }
+
+    .menu {
+        width: 300px;
+        height: 400px;
+        background-color: darksalmon;
+        margin-top: 10px;
+    }
+
+    .left {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding-top: 10px;
+    }
+
+    .img img {
+        width: 100%;
+        height: 200px;
+    }
+</style>
+
+<body>
+    <div class="all">
+        <div class="banner">
+            <div class="box a active "onclick="filter(`all`,this)">全部</div>
+            <div class="box b " onclick="filter(`drink`,this)">飲料</div>
+            <div class="box b " onclick="filter(`food`,this)">主食</div>
+            <div class="box b " onclick="filter(`dessert`,this)">甜點</div>
+        </div>
+        <div class="body">
+            <div class="left">
+                <!-- <div class="menu">
+                    <div class="img"><img src="https://i.epochtimes.com/assets/uploads/2014/10/1409221241502483.jpg"
+                            alt=""></div>
+                    <div class="text">
+                        <p>name:高級紅茶</p>
+                        <p>content:紅茶葉、水</p>
+                        <p>price:1200</p>
+                        <p>tag1:drink</p>
+                    </div>
+
+                </div> -->
+
+
+                <script>
+                    //版面請自己來
+                    //一進入網頁，先把全部的商品顯示出來
+                    //商品的顯示內容包含 1.商品名稱 2.商品照片 3.內容物 4.價錢  (排版方式不設限)
+
+                    //有過濾器(filter)    ex) 按下"甜點"按鈕 只顯示被歸類在甜點的商品
+
+
+                    // 以下是上益好好吃的商品清單
+                    var SY_goodgoodEat_Product = [
+                        {
+                            name: '高級紅茶',
+                            img: 'https://i.epochtimes.com/assets/uploads/2014/10/1409221241502483.jpg',
+                            content: '紅茶葉、水',
+                            price: '1200',
+                            tag1: 'drink'
+                        },
+                        {
+                            name: '手工餅乾',
+                            img: 'https://cdn2.ettoday.net/images/3629/d3629818.jpg',
+                            content: '澱粉、糖',
+                            price: '20',
+                            tag1: 'dessert'
+                        },
+                        {
+                            name: '珍珠奶茶',
+                            img: 'https://attach.setn.com/newsimages/2018/11/06/1627152-XXL.jpg',
+                            content: '奶茶、珍珠、水',
+                            price: '65',
+                            tag1: 'drink',
+                            tag2: 'dessert'
+                        },
+                        {
+                            name: '紅燒牛肉麵',
+                            img: 'https://1.bp.blogspot.com/-4L2AeEI4x9A/XgA9c6okfMI/AAAAAAABJ-s/sXJMDKGOaY08UKCD82ioxSFQq5IC2u9PwCKgBGAsYHg/s1600/00.jpg',
+                            content: '牛肉、麵條、調味料',
+                            price: '180',
+                            tag1: 'food'
+                        },
+                        {
+                            name: '滷肉飯',
+                            img: 'https://2.bp.blogspot.com/-VKO_fV4tzB8/WsDMatMdEQI/AAAAAAABNgc/cyaHyT2FjxY_U96pKdBcz2BMSVFPvPSPwCLcBGAs/s1600/DSC_00461.JPG',
+                            content: '飯、滷肉、調味料',
+                            price: '35',
+                            tag1: 'food'
+                        },
+                        {
+                            name: '蘋果派',
+                            img: 'https://img-global.cpcdn.com/recipes/10860064e49c3f0b/751x532cq70/%E6%B3%95%E5%BC%8F%E8%98%8B%E6%9E%9C%E6%B4%BE-%E9%A3%9F%E8%AD%9C%E6%88%90%E5%93%81%E7%85%A7%E7%89%87.jpg',
+                            content: '蘋果、派皮、糖',
+                            price: '210',
+                            tag1: 'dessert'
+                        },
+                        {
+                            name: '多多綠茶',
+                            img: 'https://www.85cafe.com/file/product/w500/%E5%A4%9A%E5%A4%9A%E7%B6%A0%E8%8C%B6.jpg',
+                            content: '養樂多、糖、綠茶',
+                            price: '50',
+                            tag1: 'drink'
+                        }
+                    ]
+
+                    var body = document.querySelector(".body")
+                    var a = document.querySelector(".a")
+                    var b = document.querySelectorAll(".b")
+                    var box = document.querySelector(".box")
+
+                    var left = document.querySelector(".left")
+
+
+                    a.onclick = function () {
+                        left.innerHTML = ''
+                        
+                        SY_goodgoodEat_Product.forEach(element => {
+                            left.innerHTML += `  <div class="menu">
+                    <div class="img"><img src=${element.img}
+                            alt=""></div>
+                    <div class="text">
+                        <p>名稱:${element.name}</p>
+                        <p>成分:${element.content}</p>
+                        <p>價格:${element.price}</p>
+                        <p>編號:${element.tag1}</p>
+                    </div>
+
+                </div>`
+
+                        });
+                    }
+                    filter.onclick = function () {
+
+                       
+                        SY_goodgoodEat_Product.forEach(element => {
+                            left.innerHTML += `  <div class="menu">
+                    <div class="img"><img src=${element.img}
+                            alt=""></div>
+                    <div class="text">
+                        <p>名稱:${element.name}</p>
+                        <p>成分:${element.content}</p>
+                        <p>價格:${element.price}</p>
+                        <p>編號:${element.tag1}</p>
+                    </div>
+
+                </div>`
+
+                        });
+                    }
+
+                    function filter(x, obj) {
+
+                        left.innerHTML = ``
+                        textbox()
+                        obj.classList.add("active")
+                        
+                        SY_goodgoodEat_Product.forEach(element => {
+                            if (element.tag1 == x || element.tag2 == x) {
+                                left.innerHTML += `  <div class="menu">
+                    <div class="img"><img src=${element.img}
+                            alt=""></div>
+                    <div class="text">
+                        <p>名稱:${element.name}</p>
+                        <p>成分:${element.content}</p>
+                        <p>價格:${element.price}</p>
+                        <p>編號:${element.tag1}</p>
+                    </div>
+
+                </div>`
+
+
+                            }
+                        });
+
+                    }
+
+                    var boxs = document.querySelectorAll(".box")
+                    function textbox() {
+                        boxs.forEach(box => {
+                            if (box.classList.contains('active')) {
+                                box.classList.remove('active')
+                            }
+                        });
+
+
+                    
+                    }
+
+
+                </script>
+</body>
+
+</html>
